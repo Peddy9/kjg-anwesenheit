@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KjG Riemke · Anwesenheit</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0C6880; --teal-d:#08495a; --plum:#584767; --wine:#8E2F55; --wine-d:#6d2341;
+  --grad:linear-gradient(135deg,var(--teal) 0%,var(--plum) 55%,var(--wine) 100%);
+  --bg:#f4f6f8; --card:#ffffff; --ink:#1d2433; --muted:#6b7385; --line:#e3e7ee;
+  --da:#2fa35a; --ab:#f2c230; --u:#e0473f; --frei:#b3bac4; --sp:#f08a24; --nb:#8e5bd0;
+  --cell:42px; --namew:178px; --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Fira Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;cursor:pointer}
+input,select{font:inherit}
+
+/* ---------- Header ---------- */
+.hero{position:relative;background:var(--grad);color:#fff;padding:22px 24px 74px;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto -10% -60% -10%;height:120%;background:radial-gradient(closest-side,rgba(255,255,255,.14),transparent);pointer-events:none}
+.hero-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:16px}
+.logo-card{background:#fff;border-radius:12px;padding:8px 14px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.logo-card img{height:46px;display:block}
+.hero h1{margin:0;font-size:clamp(24px,3.4vw,36px);font-weight:800;letter-spacing:-.02em}
+.hero p{margin:2px 0 0;opacity:.85;font-size:15px}
+.live{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:7px 12px;border-radius:999px;font-size:13px;font-weight:500}
+.live i{width:8px;height:8px;border-radius:50%;background:#7CF0A5;box-shadow:0 0 0 0 rgba(124,240,165,.7);animation:pulse 2s infinite}
+.live.off i{background:#ffb4b4;animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(124,240,165,.7)}70%{box-shadow:0 0 0 9px rgba(124,240,165,0)}100%{box-shadow:0 0 0 0 rgba(124,240,165,0)}}
+
+/* ---------- Main ---------- */
+main{max-width:1400px;margin:-52px auto 40px;padding:0 16px;position:relative;z-index:2}
+.panel{background:var(--card);border-radius:var(--r);box-shadow:0 10px 30px rgba(20,30,60,.08);border:1px solid var(--line)}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line)}
+.search{flex:1 1 180px;min-width:150px;position:relative}
+.search input{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px 10px 36px;outline:none;transition:border-color .2s,box-shadow .2s}
+.search input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(12,104,128,.15)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:transform .15s,box-shadow .2s,background .2s}
+.btn:active{transform:scale(.97)}
+.btn-pri{background:var(--grad);color:#fff;box-shadow:0 4px 14px rgba(142,47,85,.28)}
+.btn-pri:hover{box-shadow:0 6px 20px rgba(142,47,85,.38)}
+.btn-sec{background:#eef2f6;color:var(--ink)}
+.btn-sec:hover{background:#e3e9f0}
+.btn-danger{background:#fdecec;color:#b42318}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend b{width:16px;height:16px;border-radius:5px;display:inline-block}
+
+/* ---------- Grid ---------- */
+.wrap{overflow:auto;max-height:calc(100vh - 210px);min-height:320px;position:relative;border-radius:0 0 var(--r) var(--r);overscroll-behavior:contain}
+table{border-collapse:separate;border-spacing:0;min-width:100%}
+th,td{padding:0;background:var(--card)}
+thead th{position:sticky;top:0;z-index:3;border-bottom:1px solid var(--line)}
+th.corner{left:0;z-index:5;width:var(--namew);min-width:var(--namew);text-align:left;padding:10px 14px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);vertical-align:bottom;border-right:1px solid var(--line)}
+th.ev{min-width:calc(var(--cell) + 8px);height:150px;vertical-align:bottom;padding:6px 2px 8px}
+.evbtn{border:0;background:transparent;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;border-radius:10px;padding:4px 0;color:var(--ink);transition:background .2s}
+.evbtn:hover{background:#f1f4f8}
+.evbtn .t{writing-mode:vertical-rl;transform:rotate(180deg);font-size:13px;font-weight:600;max-height:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.evbtn .d{font-size:11px;font-weight:700;color:var(--teal);line-height:1.1;text-align:center}
+.evbtn .d small{display:block;color:var(--muted);font-weight:500}
+th.ev.off .t{color:var(--muted)}
+th.ev.off .d{color:var(--muted)}
+th.ev.today .evbtn{background:linear-gradient(180deg,rgba(12,104,128,.10),rgba(142,47,85,.10))}
+th.fill,td.fill{width:100%}
+th.stat{right:0;z-index:4;min-width:120px;width:120px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);vertical-align:bottom;padding:10px;border-left:1px solid var(--line)}
+td.name{position:sticky;left:0;z-index:2;border-right:1px solid var(--line);width:var(--namew);min-width:var(--namew);max-width:var(--namew)}
+.namebtn{border:0;background:transparent;width:100%;text-align:left;padding:0 14px;height:calc(var(--cell) + 6px);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.namebtn:hover{color:var(--wine)}
+tbody tr:hover td{background:#f8fafc}
+tbody tr:hover td.name .namebtn{color:var(--wine)}
+td.c{text-align:center}
+.cell{width:var(--cell);height:var(--cell);margin:3px 4px;border-radius:10px;border:0;background:#f0f2f5;position:relative;transition:transform .12s,box-shadow .2s;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px}
+.cell:hover{transform:scale(1.08);box-shadow:0 4px 12px rgba(20,30,60,.15)}
+.cell:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.cell.s-da{background:var(--da)} .cell.s-ab{background:var(--ab);color:#5a4500} .cell.s-u{background:var(--u)}
+.cell.s-frei{background:var(--frei)} .cell.s-sp{background:var(--sp)} .cell.s-nb{background:var(--nb)}
+.cell.auto{background:repeating-linear-gradient(135deg,#e6e9ee 0 6px,#f2f4f7 6px 12px)}
+.cell .note{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.25)}
+td.stat{position:sticky;right:0;z-index:2;border-left:1px solid var(--line);padding:0 10px;white-space:nowrap}
+.q{display:flex;align-items:center;gap:8px}
+.bar{flex:1;height:6px;border-radius:9px;background:#edf0f4;overflow:hidden;min-width:28px}
+.bar i{display:block;height:100%;background:var(--grad);border-radius:9px}
+.q b{font-size:13px;min-width:34px;text-align:right}
+.ucount{font-size:11px;font-weight:700;color:#fff;background:var(--u);border-radius:999px;padding:1px 6px}
+tfoot td{position:sticky;bottom:0;z-index:3;border-top:1px solid var(--line);font-size:12px;color:var(--muted);text-align:center;padding:8px 0;font-weight:600}
+tfoot td.name{z-index:4;text-align:left;padding:8px 14px;text-transform:uppercase;letter-spacing:.06em}
+tfoot td.stat{z-index:4}
+.empty{padding:60px 20px;text-align:center;color:var(--muted)}
+.empty h3{color:var(--ink);margin:0 0 6px}
+
+/* ---------- Popover ---------- */
+.pop{position:fixed;z-index:50;background:#fff;border-radius:16px;box-shadow:0 18px 50px rgba(20,30,60,.25);border:1px solid var(--line);padding:12px;width:270px;display:none}
+.pop h4{margin:0 0 2px;font-size:15px}
+.pop .sub{font-size:12px;color:var(--muted);margin-bottom:10px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.opt{border:2px solid transparent;border-radius:10px;padding:9px 8px;display:flex;align-items:center;gap:8px;background:#f6f8fa;font-size:13px;font-weight:500;text-align:left;color:var(--ink);transition:background .15s,border-color .15s}
+.opt:hover{background:#eef2f6}
+.opt.sel{border-color:var(--ink)}
+.opt b{width:16px;height:16px;border-radius:5px;flex:none}
+.pop input{width:100%;margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:13px;outline:none}
+.pop input:focus{border-color:var(--teal)}
+.pop .row{display:flex;justify-content:space-between;margin-top:10px;gap:6px}
+.pop .row .btn{padding:8px 12px;font-size:13px}
+
+/* ---------- Dialog ---------- */
+dialog{border:0;border-radius:18px;padding:0;width:min(420px,calc(100vw - 32px));box-shadow:0 30px 80px rgba(20,30,60,.35)}
+dialog::backdrop{background:rgba(20,25,40,.45);backdrop-filter:blur(3px)}
+.dlg-h{background:var(--grad);color:#fff;padding:18px 20px}
+.dlg-h h3{margin:0;font-size:19px}
+.dlg-b{padding:18px 20px;display:grid;gap:14px}
+.dlg-b label{display:grid;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.dlg-b input[type=text],.dlg-b input[type=date],.dlg-b textarea{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;color:var(--ink);outline:none;font-family:inherit}
+.dlg-b input:focus,.dlg-b textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(12,104,128,.15)}
+.check{display:flex!important;grid-template-columns:none!important;align-items:center;gap:10px!important;color:var(--ink)!important;font-weight:500!important}
+.check input{width:20px;height:20px;accent-color:var(--teal)}
+.dlg-f{display:flex;justify-content:space-between;gap:8px;padding:0 20px 18px}
+.dlg-f .r{display:flex;gap:8px;margin-left:auto}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;z-index:60}
+.loading{padding:70px 20px;text-align:center;color:var(--muted)}
+.spin{width:32px;height:32px;border-radius:50%;border:3px solid #e6e9ee;border-top-color:var(--wine);animation:sp 0.9s linear infinite;margin:0 auto 12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+@media (max-width:640px){
+  :root{--cell:36px;--namew:118px}
+  .hero{padding:16px 16px 66px}
+  .logo-card img{height:34px}
+  .brand{gap:12px}
+  .hero p{display:none}
+  main{padding:0 10px}
+  .toolbar .btn span{display:none}
+  th.stat,td.stat{min-width:64px}
+  .bar{display:none}
+  .wrap{max-height:calc(100vh - 230px)}
+  .search{min-width:110px}
+  .toolbar{flex-wrap:nowrap}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-in">
+    <div class="brand">
+      <div class="logo-card"><img src="logo.png" alt="KjG St. Franziskus Riemke"></div>
+      <div>
+        <h1 class="reveal">Anwesenheit</h1>
+        <p class="reveal">Wer war wann da – auf einen Blick.</p>
+      </div>
+    </div>
+    <div class="live off reveal" id="live"><i></i><span>Verbinde …</span></div>
+  </div>
+</header>
+
+<main>
+  <section class="panel" id="panel">
+    <div class="toolbar">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Name suchen …" autocomplete="off">
+      </label>
+      <button class="btn btn-sec" id="toToday" title="Zum neuesten Termin">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span>Neueste</span>
+      </button>
+      <button class="btn btn-sec" id="addPerson">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 4-6 8-6s8 2 8 6M19 8v6M16 11h6"/></svg><span>Person</span>
+      </button>
+      <button class="btn btn-pri" id="addEvent">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>Termin</span>
+      </button>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="wrap" id="wrap" data-lenis-prevent>
+      <div class="loading"><div class="spin"></div>Lade Anwesenheiten …</div>
+    </div>
+  </section>
+</main>
+
+<!-- Status-Auswahl -->
+<div class="pop" id="pop" role="dialog" aria-modal="false">
+  <h4 id="popName"></h4>
+  <div class="sub" id="popEvent"></div>
+  <div class="opts" id="popOpts"></div>
+  <input id="popNote" type="text" placeholder="Notiz (optional), z. B. „20 Min. zu spät“" maxlength="200">
+  <div class="row">
+    <button class="btn btn-sec" id="popClear">Leeren</button>
+    <button class="btn btn-pri" id="popSave">Fertig</button>
+  </div>
+</div>
+
+<!-- Termin-Dialog -->
+<dialog id="evDlg">
+  <form method="dialog" id="evForm">
+    <div class="dlg-h"><h3 id="evDlgTitle">Neuer Termin</h3></div>
+    <div class="dlg-b">
+      <label>Bezeichnung<input type="text" id="evTitle" required maxlength="60" placeholder="z. B. Gruppenstunde, Leiterrunde"></label>
+      <label>Datum<input type="date" id="evDate" required></label>
+      <label class="check"><input type="checkbox" id="evMand" checked> Anwesenheitspflicht</label>
+    </div>
+    <div class="dlg-f">
+      <button type="button" class="btn btn-danger" id="evDel" hidden>Löschen</button>
+      <div class="r">
+        <button type="button" class="btn btn-sec" data-close>Abbrechen</button>
+        <button type="submit" class="btn btn-pri">Speichern</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<!-- Personen-Dialog -->
+<dialog id="pDlg">
+  <form method="dialog" id="pForm">
+    <div class="dlg-h"><h3 id="pDlgTitle">Neue Person</h3></div>
+    <div class="dlg-b">
+      <label>Name<input type="text" id="pName" required maxlength="60" placeholder="Vorname Nachname"></label>
+      <div id="pStats" style="font-size:13px;color:var(--muted)"></div>
+    </div>
+    <div class="dlg-f">
+      <button type="button" class="btn btn-danger" id="pDel" hidden>Entfernen</button>
+      <div class="r">
+        <button type="button" class="btn btn-sec" data-close>Abbrechen</button>
+        <button type="submit" class="btn btn-pri">Speichern</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+/* ======= Konfiguration ======= */
+const SUPABASE_URL = "https://wxtlxzvxkraiqthhmsok.supabase.co";
+const SUPABASE_KEY = "sb_publishable_XyIFU5gWTMNtGYpQin0-Og_Z4sCwRSh";
+
+const STATUS = {
+  da:   {label:"War da",            short:"",   color:"var(--da)"},
+  ab:   {label:"Abgemeldet",        short:"",   color:"var(--ab)"},
+  u:    {label:"Unentschuldigt",    short:"!",  color:"var(--u)"},
+  sp:   {label:"Zu spät",           short:"",   color:"var(--sp)"},
+  nb:   {label:"Nicht beteiligt",   short:"",   color:"var(--nb)"},
+  frei: {label:"Keine Pflicht",     short:"",   color:"var(--frei)"}
+};
+const PRESENT = new Set(["da","sp","nb"]);
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let people = [], events = [], att = new Map(), firstRender = true;
+const $ = s => document.querySelector(s);
+const key = (p,e) => p + "|" + e;
+const collator = new Intl.Collator("de", {sensitivity:"base"});
+const fmtDay = new Intl.DateTimeFormat("de-DE",{weekday:"short"});
+const todayISO = new Date().toLocaleDateString("sv-SE");
+
+/* ======= Smooth Scrolling (Lenis) ======= */
+if (window.Lenis) {
+  const lenis = new Lenis({lerp:0.12});
+  (function raf(t){ lenis.raf(t); requestAnimationFrame(raf); })(0);
+}
+
+/* ======= Legende ======= */
+$("#legend").innerHTML = Object.entries(STATUS)
+  .map(([k,s]) => `<span><b style="background:${s.color}"></b>${s.label}</span>`).join("")
+  + `<span><b style="background:repeating-linear-gradient(135deg,#e6e9ee 0 4px,#f2f4f7 4px 8px)"></b>Termin ohne Pflicht (leer)</span>`;
+
+/* ======= Laden ======= */
+async function load(){
+  const [p,e,a] = await Promise.all([
+    sb.from("people").select("*").eq("active", true),
+    sb.from("events").select("*").order("date").order("created_at"),
+    sb.from("attendance").select("*")
+  ]);
+  if (p.error || e.error || a.error) {
+    $("#wrap").innerHTML = `<div class="empty"><h3>Verbindung fehlgeschlagen</h3>Bitte Seite neu laden.</div>`;
+    return;
+  }
+  people = p.data.sort((x,y) => collator.compare(x.name, y.name));
+  events = e.data;
+  att = new Map(a.data.map(r => [key(r.person_id, r.event_id), r]));
+  render();
+}
+
+/* ======= Statistik ======= */
+function statsFor(pid){
+  let pflicht = 0, present = 0, u = 0, ab = 0, sp = 0, nb = 0;
+  for (const ev of events){
+    if (!ev.mandatory) continue;
+    const r = att.get(key(pid, ev.id));
+    if (!r || r.status === "frei") continue;
+    pflicht++;
+    if (PRESENT.has(r.status)) present++;
+    if (r.status === "u") u++;
+    if (r.status === "ab") ab++;
+    if (r.status === "sp") sp++;
+    if (r.status === "nb") nb++;
+  }
+  return {pflicht, present, u, ab, sp, nb, pct: pflicht ? Math.round(present / pflicht * 100) : null};
+}
+
+/* ======= Rendern ======= */
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+function render(){
+  const q = $("#q").value.trim().toLowerCase();
+  const list = people.filter(p => !q || p.name.toLowerCase().includes(q));
+  const wrap = $("#wrap");
+  const keepX = wrap.scrollLeft, keepY = wrap.scrollTop;
+
+  if (!events.length){
+    wrap.innerHTML = `<div class="empty"><h3>Noch keine Termine</h3>Leg oben mit „+ Termin“ den ersten an – danach kannst du für jede Person eintragen, ob sie da war.</div>`;
+    return;
+  }
+
+  let h = `<table><thead><tr><th class="corner">${list.length} Personen</th>`;
+  for (const ev of events){
+    const d = new Date(ev.date + "T12:00:00");
+    const dd = d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"});
+    h += `<th class="ev${ev.mandatory ? "" : " off"}${ev.date === todayISO ? " today" : ""}" data-ev="${ev.id}">
+      <button class="evbtn" data-edit-ev="${ev.id}" title="${esc(ev.title)} – ${d.toLocaleDateString("de-DE")}${ev.mandatory ? "" : " (keine Pflicht)"}">
+        <span class="t">${esc(ev.title)}</span><span class="d">${dd}<small>${fmtDay.format(d)}</small></span>
+      </button></th>`;
+  }
+  h += `<th class="fill"></th><th class="stat">Quote</th></tr></thead><tbody>`;
+
+  for (const p of list){
+    h += `<tr data-row="${p.id}"><td class="name"><button class="namebtn" data-edit-p="${p.id}">${esc(p.name)}</button></td>`;
+    for (const ev of events){
+      const r = att.get(key(p.id, ev.id));
+      const st = r ? r.status : null;
+      const cls = st ? "s-" + st : (ev.mandatory ? "" : "auto");
+      const tip = `${p.name} · ${ev.title}: ${st ? STATUS[st].label : (ev.mandatory ? "noch nichts eingetragen" : "keine Pflicht")}${r && r.note ? " – " + r.note : ""}`;
+      h += `<td class="c"><button class="cell ${cls}" data-p="${p.id}" data-e="${ev.id}" title="${esc(tip)}" aria-label="${esc(tip)}">${st ? STATUS[st].short : ""}${r && r.note ? '<span class="note"></span>' : ""}</button></td>`;
+    }
+    const s = statsFor(p.id);
+    h += `<td class="fill"></td><td class="stat"><div class="q">${s.pct === null ? `<b style="color:var(--muted)">–</b>` :
+          `<div class="bar"><i style="width:${s.pct}%"></i></div><b>${s.pct}%</b>`}${s.u ? `<span class="ucount" title="${s.u}× unentschuldigt">${s.u}</span>` : ""}</div></td></tr>`;
+  }
+  if (!list.length) h += `<tr><td class="name"></td><td colspan="${events.length + 2}" class="empty">Niemand gefunden.</td></tr>`;
+
+  h += `</tbody><tfoot><tr><td class="name">Anwesend</td>`;
+  for (const ev of events){
+    let n = 0, total = 0;
+    for (const p of people){ const r = att.get(key(p.id, ev.id)); if (r){ total++; if (PRESENT.has(r.status)) n++; } }
+    h += `<td>${total ? n : "–"}</td>`;
+  }
+  h += `<td class="fill"></td><td class="stat"></td></tr></tfoot></table>`;
+  wrap.innerHTML = h;
+
+  if (firstRender){
+    firstRender = false;
+    wrap.scrollLeft = wrap.scrollWidth;
+    if (window.gsap){
+      gsap.from("#wrap tbody tr", {opacity:0, y:10, duration:.45, stagger:.012, ease:"power2.out"});
+      gsap.from("#wrap thead th.ev", {opacity:0, y:-12, duration:.5, stagger:.03, ease:"power2.out"});
+    }
+  } else {
+    wrap.scrollLeft = keepX; wrap.scrollTop = keepY;
+  }
+}
+
+/* ======= Status-Popover ======= */
+const pop = $("#pop");
+let cur = null;
+$("#popOpts").innerHTML = Object.entries(STATUS)
+  .map(([k,s]) => `<button class="opt" data-st="${k}"><b style="background:${s.color}"></b>${s.label}</button>`).join("");
+
+function openPop(btn){
+  const p = people.find(x => x.id === btn.dataset.p), ev = events.find(x => x.id === btn.dataset.e);
+  if (!p || !ev) return;
+  const r = att.get(key(p.id, ev.id));
+  cur = {p, ev, btn, status: r ? r.status : null};
+  $("#popName").textContent = p.name;
+  $("#popEvent").textContent = `${ev.title} · ${new Date(ev.date + "T12:00:00").toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"})}`;
+  $("#popNote").value = r && r.note ? r.note : "";
+  markSel();
+  pop.style.display = "block";
+  const b = btn.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight;
+  let x = b.left + b.width / 2 - pw / 2, y = b.bottom + 8;
+  x = Math.max(10, Math.min(x, innerWidth - pw - 10));
+  if (y + ph > innerHeight - 10) y = Math.max(10, b.top - ph - 8);
+  pop.style.left = x + "px"; pop.style.top = y + "px";
+  if (window.gsap) gsap.fromTo(pop, {opacity:0, scale:.94, y:-6}, {opacity:1, scale:1, y:0, duration:.22, ease:"power2.out"});
+}
+function markSel(){ document.querySelectorAll(".opt").forEach(o => o.classList.toggle("sel", cur && o.dataset.st === cur.status)); }
+function closePop(){ pop.style.display = "none"; cur = null; }
+
+async function saveCell(status, note){
+  if (!cur) return;
+  const {p, ev} = cur, k = key(p.id, ev.id), prev = att.get(k);
+  note = (note || "").trim() || null;
+  if (status){
+    att.set(k, {person_id:p.id, event_id:ev.id, status, note});
+  } else att.delete(k);
+  closePop(); render(); flash(p.id, ev.id);
+  const res = status
+    ? await sb.from("attendance").upsert({person_id:p.id, event_id:ev.id, status, note, updated_at:new Date().toISOString()})
+    : await sb.from("attendance").delete().match({person_id:p.id, event_id:ev.id});
+  if (res.error){ prev ? att.set(k, prev) : att.delete(k); render(); toast("Speichern fehlgeschlagen – bitte nochmal."); }
+}
+function flash(pid, eid){
+  const el = document.querySelector(`.cell[data-p="${pid}"][data-e="${eid}"]`);
+  if (el && window.gsap) gsap.fromTo(el, {scale:.7}, {scale:1, duration:.4, ease:"back.out(3)"});
+}
+
+document.getElementById("popOpts").addEventListener("click", e => {
+  const o = e.target.closest(".opt"); if (!o || !cur) return;
+  saveCell(o.dataset.st, $("#popNote").value);
+});
+$("#popClear").onclick = () => saveCell(null);
+$("#popSave").onclick = () => cur && (cur.status ? saveCell(cur.status, $("#popNote").value) : closePop());
+$("#popNote").addEventListener("keydown", e => { if (e.key === "Enter") $("#popSave").click(); });
+
+document.addEventListener("click", e => {
+  const cell = e.target.closest(".cell");
+  if (cell){ openPop(cell); return; }
+  const ev = e.target.closest("[data-edit-ev]");
+  if (ev){ openEvent(ev.dataset.editEv); return; }
+  const pp = e.target.closest("[data-edit-p]");
+  if (pp){ openPerson(pp.dataset.editP); return; }
+  if (!e.target.closest("#pop")) closePop();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closePop(); });
+$("#wrap").addEventListener("scroll", closePop, {passive:true});
+addEventListener("resize", closePop);
+
+/* ======= Termine ======= */
+const evDlg = $("#evDlg"); let editEv = null;
+function openEvent(id){
+  editEv = id ? events.find(x => x.id === id) : null;
+  $("#evDlgTitle").textContent = editEv ? "Termin bearbeiten" : "Neuer Termin";
+  $("#evTitle").value = editEv ? editEv.title : "";
+  $("#evDate").value = editEv ? editEv.date : todayISO;
+  $("#evMand").checked = editEv ? editEv.mandatory : true;
+  $("#evDel").hidden = !editEv;
+  evDlg.showModal(); popIn(evDlg);
+}
+$("#addEvent").onclick = () => openEvent(null);
+$("#evForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const row = {title: $("#evTitle").value.trim(), date: $("#evDate").value, mandatory: $("#evMand").checked};
+  if (!row.title || !row.date) return;
+  const res = editEv ? await sb.from("events").update(row).eq("id", editEv.id) : await sb.from("events").insert(row);
+  if (res.error) return toast("Konnte Termin nicht speichern.");
+  evDlg.close(); toast(editEv ? "Termin aktualisiert" : "Termin angelegt");
+  const isNew = !editEv; await load();
+  if (isNew) $("#wrap").scrollTo({left: $("#wrap").scrollWidth, behavior:"smooth"});
+});
+$("#evDel").onclick = async () => {
+  if (!editEv || !confirm(`„${editEv.title}“ wirklich löschen? Alle Einträge dieses Termins gehen verloren.`)) return;
+  const res = await sb.from("events").delete().eq("id", editEv.id);
+  if (res.error) return toast("Löschen fehlgeschlagen.");
+  evDlg.close(); toast("Termin gelöscht"); load();
+};
+
+/* ======= Personen ======= */
+const pDlg = $("#pDlg"); let editP = null;
+function openPerson(id){
+  editP = id ? people.find(x => x.id === id) : null;
+  $("#pDlgTitle").textContent = editP ? "Person bearbeiten" : "Neue Person";
+  $("#pName").value = editP ? editP.name : "";
+  $("#pDel").hidden = !editP;
+  if (editP){
+    const s = statsFor(editP.id);
+    $("#pStats").innerHTML = s.pflicht
+      ? `Bei <b>${s.pflicht}</b> Pflichtterminen: <b style="color:var(--da)">${s.present}× da</b>${s.sp ? `, davon ${s.sp}× zu spät` : ""}${s.nb ? `, ${s.nb}× nicht beteiligt` : ""} · <b style="color:#a37f00">${s.ab}× abgemeldet</b> · <b style="color:var(--u)">${s.u}× unentschuldigt</b>`
+      : "Noch keine Einträge.";
+  } else $("#pStats").textContent = "";
+  pDlg.showModal(); popIn(pDlg);
+}
+$("#addPerson").onclick = () => openPerson(null);
+$("#pForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("#pName").value.trim(); if (!name) return;
+  const res = editP ? await sb.from("people").update({name}).eq("id", editP.id) : await sb.from("people").insert({name});
+  if (res.error) return toast("Konnte nicht speichern.");
+  pDlg.close(); toast(editP ? "Name geändert" : `${name} hinzugefügt`); load();
+});
+$("#pDel").onclick = async () => {
+  if (!editP || !confirm(`${editP.name} aus der Liste entfernen? Die bisherigen Einträge werden mit gelöscht.`)) return;
+  const res = await sb.from("people").delete().eq("id", editP.id);
+  if (res.error) return toast("Entfernen fehlgeschlagen.");
+  pDlg.close(); toast(`${editP.name} entfernt`); load();
+};
+
+document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => b.closest("dialog").close());
+document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", e => { if (e.target === d) d.close(); }));
+function popIn(d){ if (window.gsap) gsap.fromTo(d, {opacity:0, y:20, scale:.97}, {opacity:1, y:0, scale:1, duration:.3, ease:"power3.out"}); }
+
+/* ======= Sonstiges ======= */
+$("#q").addEventListener("input", render);
+$("#toToday").onclick = () => $("#wrap").scrollTo({left: $("#wrap").scrollWidth, behavior:"smooth"});
+let tt;
+function toast(msg){
+  const t = $("#toast"); t.textContent = msg;
+  if (window.gsap){ gsap.killTweensOf(t); gsap.to(t, {opacity:1, y:0, duration:.25}); }
+  else t.style.opacity = 1;
+  clearTimeout(tt); tt = setTimeout(() => window.gsap ? gsap.to(t, {opacity:0, y:20, duration:.3}) : (t.style.opacity = 0), 2200);
+}
+
+/* ======= Live-Updates ======= */
+let reloadT;
+const reload = () => { clearTimeout(reloadT); reloadT = setTimeout(load, 250); };
+sb.channel("kjg-live")
+  .on("postgres_changes", {event:"*", schema:"public", table:"attendance"}, payload => {
+    const r = payload.new && payload.new.person_id ? payload.new : null;
+    if (payload.eventType === "DELETE"){ reload(); return; }
+    if (r){
+      const k = key(r.person_id, r.event_id), old = att.get(k);
+      if (old && old.status === r.status && (old.note || null) === (r.note || null)) return;
+      att.set(k, r); if (!cur) { render(); flash(r.person_id, r.event_id); }
+    }
+  })
+  .on("postgres_changes", {event:"*", schema:"public", table:"events"}, reload)
+  .on("postgres_changes", {event:"*", schema:"public", table:"people"}, reload)
+  .subscribe(status => {
+    const live = $("#live");
+    const on = status === "SUBSCRIBED";
+    live.classList.toggle("off", !on);
+    live.querySelector("span").textContent = on ? "Live" : "Offline";
+  });
+
+if (window.gsap) gsap.from(".reveal, .logo-card", {opacity:0, y:14, duration:.6, stagger:.08, ease:"power3.out"});
+load();
+</script>
+</body>
+</html>
